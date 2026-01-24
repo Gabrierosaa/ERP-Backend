@@ -9,5 +9,9 @@
         public string Email { get; set; } // Email should be unique
         public bool Active { get; set; } = true;
         public DateTime CreatedAt { get; set; }
-    }
+
+
+
+    }    
+        
 }
