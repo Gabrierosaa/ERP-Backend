@@ -29,8 +29,7 @@ namespace ERP_Backend.Controllers
 
         // POST api/customers
         [HttpPost]
-        public async Task<ActionResult<CustomerResponseDto>> Post(
-            [FromBody] CustomerCreateDto dto)
+        public async Task<ActionResult<CustomerResponseDto>> Post([FromBody] CustomerCreateDto dto)
         {
             var createdCustomer = await _customerService.CreateAsync(dto);
 
