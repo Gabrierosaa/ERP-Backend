@@ -3,6 +3,7 @@ using ERP_Backend.DTOs;
 using ERP_Backend.Data;
 using ERP_Backend.Entities.Customer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace ERP_Backend.Services
 {
@@ -54,6 +55,47 @@ namespace ERP_Backend.Services
             if (customer == null)
                 return null;
 
+            return new CustomerResponseDto
+            {
+                Id = customer.Id,
+                Name = customer.Name,
+                Cpf = customer.Cpf,
+                PhoneNumber = customer.PhoneNumber,
+                Email = customer.Email,
+                Active = customer.Active,
+                CreatedAt = customer.CreatedAt
+            };
+        }
+
+        public async Task<CustomerResponseDto?> UpdateById(int id, CustomerUpdateDto dto)
+        {
+         
+            var customer = await _context.Customers
+                .FirstOrDefaultAsync(c => c.Id == id);
+
+            if (customer == null)
+                return null; 
+
+           
+            if (!string.IsNullOrWhiteSpace(dto.Cpf) && dto.Cpf != customer.Cpf)
+            {
+                if (!CpfValido(dto.Cpf))
+                    throw new ArgumentException("CPF inválido.");
+
+                customer.Cpf = dto.Cpf;
+            }
+
+           
+            customer.Name = dto.Name;
+            customer.PhoneNumber = dto.PhoneNumber;
+            customer.Email = dto.Email;
+            customer.Active = dto.Active;
+            
+
+        
+            await _context.SaveChangesAsync();
+
+            
             return new CustomerResponseDto
             {
                 Id = customer.Id,

@@ -17,5 +17,10 @@ namespace ERP_Backend.Data
             // Mínimo necessário só para mapear tabela/colunas se quiser
             modelBuilder.Entity<Customer>().ToTable("Customers");
         }
+
+        internal async Task GetByIdAsync(int id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
