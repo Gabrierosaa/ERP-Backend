@@ -28,7 +28,7 @@ namespace ERP_Backend.Controllers
         }
 
         // POST api/customers
-        [HttpPost]
+        [HttpPut("{id}")]
         public async Task<ActionResult<CustomerResponseDto>> Post(
             [FromBody] CustomerCreateDto dto)
         {
@@ -40,5 +40,28 @@ namespace ERP_Backend.Controllers
                 createdCustomer
             );
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Update(int id, [FromBody] CustomerUpdateDto dto)
+        {
+            if (dto == null)
+                return BadRequest("Dados inválidos.");
+
+            try
+            {
+                var updatedCustomer = await _customerService.UpdateById(id, dto);
+
+                if (updatedCustomer == null)
+                    return NotFound("Cliente não encontrado.");
+
+                return Ok(updatedCustomer);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
+
 }
+
